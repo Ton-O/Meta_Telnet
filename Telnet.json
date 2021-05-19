@@ -1,0 +1,77 @@
+{   "name":"Telnet",
+    "manufacturer":"TonO",
+    "type":"AUDIO",
+    "version":1,
+     "variables":{
+       "Response":"",
+       "TelnetURI": "192.168.0.1",
+       "TelnetPort":"23"  
+     },
+     "labels": {
+       "Response": {"label": "Response","listen": "Response"}
+     }, 
+    "buttons":{          
+     "POWER ON": {
+       "label": "",
+       "type": "static",
+       "command": ""  
+    },
+     "POWER OFF": {
+       "label": "",
+       "type": "static",
+       "command": "",
+       "evaldo":[{"test":true,"then":"__CLEANUP", "or":""}]
+     },
+     "__INITIALISE": {"label": "", "type":"static", "command":"."
+     },
+     "__CLEANUP": {"label": "", "type":"static", "command":"."
+     },
+     "SIGNON": {
+      "label": "",
+      "type": "telnet",
+      "command": {"TelnetParms": {"host":"$TelnetURI","port":"$TelnetPort","shellPrompt":"/(?:\/ )?#/",
+               "loginPrompt":"/login[: ]*$/", "username":"admin","echoLines":0,
+               "passwordPrompt":"/Password[: ]/","password":"theone", 
+               "timeout":36000000,"execTimeout":36000000,"sendTimeout":36000000}},
+       "queryresult": "",
+       "evalwrite": [
+         {
+         "variable": "Response",
+         "value": "$Result"
+         }
+       ],
+       "evaldo":[{"test":true,"then":"__INITIALISE", "or":""}]
+    },
+  
+     "ls -al": {
+        "label": "",
+        "type": "telnet",
+        "command": {"TelnetParms": {"host":"$TelnetURI","port":"$TelnetPort"},
+          "message": "ls -al"
+          },
+        "queryresult": "",
+        "evalwrite": [
+          {
+            "variable": "Response",
+            "value": "$Result"
+          }
+        ]
+    },
+    "help ": {
+      "label": "",
+      "type": "telnet",
+      "command": {"TelnetParms": {"host":"$TelnetURI","port":"$TelnetPort"},
+        "message": "help"
+        },
+      "queryresult": "",
+      "evalwrite": [
+        {
+          "variable": "Response",
+          "value": "$Result"
+        }
+      ]
+  }
+  
+  }
+  }   
+  
